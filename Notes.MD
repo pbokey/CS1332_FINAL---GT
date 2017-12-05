@@ -20,7 +20,9 @@
     * Arrays are data structures built into Java
     * Once you define their size they cannot be resized
     * Insertion is O(n) because you have to move everything back
+      * From back, it's O(1). (Best case)
     * Deletion is O(n) because you have to move everything forward
+      * From back, it's O(1). (Best case)
     * Search is O(1) because you just use the index
     * Generic Arrays
     ```java
