@@ -96,6 +96,8 @@
       ```
 ### Second Part
    * Graphs:
+      * A subgraph of a graph is a graph where all its vertices and edges are a subset of the graph's edges and vertices.
+      * A spanning subgraph of a graph is a graph which has all the vertices of the original graph, but its edges are still a subset of the original graph's edges.
       * Depth First Search:
          * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
          ```java
