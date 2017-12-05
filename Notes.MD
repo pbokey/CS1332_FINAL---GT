@@ -68,3 +68,5 @@
     * Circular
       * Can either be singularly or doubly linked.
       * Based on the linking, adding and removing is the same.
+      
+ * Stacks
