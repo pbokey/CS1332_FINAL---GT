@@ -1,1 +1,67 @@
 # 1332 Final Exam
+
+## Content
+### First part of Exam
+* All Multiple Choice
+* Test 1, 2, 3
+
+### Second Part of Exam
+* Graph Algorithms (coding)
+* String Searching (coding)
+* Diagram LCS
+* Floyd-Warshaw (maybe diagram)
+* Dynamic Programming
+    * Fibonacci
+* Huffman Coding
+
+## Material
+### Test 1
+  * Arrays
+    * Arrays are data structures built into Java
+    * Once you define their size they cannot be resized
+    * Insertion is O(n) because you have to move everything back
+    * Deletion is O(n) because you have to move everything forward
+    * Search is O(1) because you just use the index
+    * Generic Arrays
+    ```java
+    T[] arr = (T[]) new Object[n];
+    ```
+  * ArrayLists
+    * ArrayLists is a data structure backed by an Array
+    * ArrayList size can be increased if the arraylsit fills up
+    * inherits AbstractList and implements List interface
+    * ArrayList cannot be used for primitive types
+    * Same Big O as Arrays
+    * Contains is O(n) (have to iterate through since you are not providing an index)
+    * Get (at an index) is O(1)
+
+  * LinkedList
+    * LinkedList is a list of connected nodes
+    * Each node contains references to other nodes as well as the data it holds
+    * Singular, Doubly, and Circular LinkedList
+      * Singular Node
+      ```java
+      class Node<T> {
+          T data;
+          Node<T> next;
+      }
+      ```
+      * Double Node
+      ```java
+      class Node<T> {
+          T data;
+          Node<T> prev;
+          Node<T> next;
+      }
+      ```
+    * Big O
+      * Get: O(n) have to iterate through the list  
+      * Search: O(n) same reason for get
+      * Add (to end): O(1) (all)
+      * Add (at index): O(n) (all)
+      * Add (to begining): O(1) (all)
+      * Delete (from end): O(n) (singly) / O(1) (doubly)
+      * Delete (at index): O(n) (all)
+      * Delete (from beginning): O(1) (all)
+    * Circular
+      * 
