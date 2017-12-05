@@ -95,7 +95,7 @@
       }
       ```
 ### Second Part
-   * Graphs:
+   * ***Graphs:***
       * **Subgraph:** A subgraph of a graph is a graph where all its vertices and edges are a subset of the original graph's edges and vertices.
       * **Spanning Subgraph:** A spanning subgraph of a graph is a graph which has all the vertices of the original graph, but its edges are still a subset of the original graph's edges.
       * A connected graph has a path between every pair of vertices.
@@ -103,7 +103,7 @@
       * **Tree:** A forest, but all the vertices are connected.
       * **Spanning Tree:** A spanning tree of a connected graph is a spanning subgraph that is a tree. This spanning tree is not unique unless the original graph is a tree.
       * **Spanning Forest:** A spanning forest is a spanning subgraph that is a forest.
-      * Depth First Search:
+      * **Depth First Search:**
          * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
          ```java
          public void dfs(List list, Vertex vertex, Graph graph) {
