@@ -45,7 +45,7 @@
       class Node<T> {
           T data;
           Node<T> next;
-      }
+        }
       ```
       * Double Node
       ```java
@@ -53,7 +53,7 @@
           T data;
           Node<T> prev;
           Node<T> next;
-      }
+        }
       ```
     * Big O
       * Get: O(n) have to iterate through the list  
@@ -101,7 +101,7 @@
           front = 0;
           back = size;
           return newArrayList;
-    }
+        }
       ```
     * When backed by a singly linked list you want to add to the back and remove from the front
     * When backed by a doubly linked list you want to add to the back and remove from the front
