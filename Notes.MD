@@ -81,7 +81,7 @@
       
       public void push(Object o) {
          if (arr.length == size) {
-            resize();
+            resize(); //or throw an exception (implementation defined)
          }
          arr[size] = o;
          size++;
