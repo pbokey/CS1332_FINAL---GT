@@ -70,3 +70,27 @@
       * Based on the linking, adding and removing is the same.
       
  * Stacks
+    * ADT that follows LIFO (last-in-first-out).
+    * Can only access data at the top of the stack.
+    * Array-Backed:
+      * Add to the back and remove from the back of the array.
+      * Variable keeps track of the index of the top element as well as the size.
+      ```java
+      Object[] arr;
+      int size;
+      
+      public void push(Object o) {
+         if (arr.length == size) {
+            resize();
+         }
+         arr[size] = o;
+         size++;
+      }
+      
+      public Object pop() {
+         size--;
+         Object item = arr[size];
+         arr[size] = null;
+         return item;
+      }
+      ```
