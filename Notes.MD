@@ -66,4 +66,5 @@
       * Delete (at index): O(n) (all)
       * Delete (from beginning): O(1) (all)
     * Circular
-      * 
+      * Can either be singularly or doubly linked.
+      * Based on the linking, adding and removing is the same.
