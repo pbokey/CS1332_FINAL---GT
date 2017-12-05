@@ -97,6 +97,7 @@
 ### Second Part
    * Graphs:
       * Depth First Search:
+         * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
          ```java
          public void dfs(List list, Vertex vertex, Graph graph) {
             list = new ArrayList();
