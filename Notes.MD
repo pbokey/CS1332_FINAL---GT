@@ -99,5 +99,14 @@
       * Depth First Search:
          ```java
          public void dfs(List list, Vertex vertex, Graph graph) {
-            
+            list = new ArrayList();
+            list.add(vertex);
+            List edges = graph.adjList().get(vertex);
+            for (Edge edge : edges) {
+               Vertex end = edge.V;
+               if (!list.contains(end)) {
+                  dfs(list, end, graph);
+               }
+            }
+         }
          ```
