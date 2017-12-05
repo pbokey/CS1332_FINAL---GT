@@ -94,3 +94,10 @@
          return item;
       }
       ```
+### Second Part
+   * Graphs:
+      * Depth First Search:
+         ```java
+         public void dfs(List list, Vertex vertex, Graph graph) {
+            
+         ```
