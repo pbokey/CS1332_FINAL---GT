@@ -96,11 +96,13 @@
       ```
 ### Second Part
    * Graphs:
-      * A subgraph of a graph is a graph where all its vertices and edges are a subset of the original graph's edges and vertices.
-      * A spanning subgraph of a graph is a graph which has all the vertices of the original graph, but its edges are still a subset of the original graph's edges.
+      * **Subgraph:** A subgraph of a graph is a graph where all its vertices and edges are a subset of the original graph's edges and vertices.
+      * **Spanning Subgraph:** A spanning subgraph of a graph is a graph which has all the vertices of the original graph, but its edges are still a subset of the original graph's edges.
       * A connected graph has a path between every pair of vertices.
       * **Forest:** An undirected graph with no cycles.
       * **Tree:** A forest, but all the vertices are connected.
+      * **Spanning Tree:** A spanning tree of a connected graph is a spanning subgraph that is a tree. This spanning tree is not unique unless the original graph is a tree.
+      * **Spanning Forest:** A spanning forest is a spanning subgraph that is a forest.
       * Depth First Search:
          * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
          ```java
@@ -116,3 +118,5 @@
             }
          }
          ```
+         * ```DFS(list, vertex, graph``` visits all the vertices and edges in the connected component of ```vertex```.
+         * All the edges and vertices visited by ```DFS(list, vertex, graph``` form a spanning tree of the connected component of ```vertex```.
