@@ -12,7 +12,6 @@
 * Floyd-Warshaw (maybe diagram)
 * Dynamic Programming
     * Fibonacci
-* Huffman Coding
 
 ## Material
 ### Test 1
@@ -64,4 +63,48 @@
       * Delete (at index): O(n) (all)
       * Delete (from beginning): O(1) (all)
     * Circular
-      * 
+      * any node can be a starting point
+      * tail -> next = head
+      * useful for implementations of queue because you don't need to maintain a reference to head and tail
+      * Can be implemented as a Singular or Doubly linked List
+      * Inherits the Big O of both types depending on which type it is
+
+  * Stacks
+    * Stacks are LIFO, think about a stack of plates
+    * They can be backed by ArrayLists or LinkedLists
+    * When backed by an array, new elements should be added to the back of the array and removed from the back
+    * When backed by a singly linked list new elements should be added to the front and removed from the front
+    * Big O:
+      * Add: O(1) (stack.push())
+      * Remove: O(1) (stack.pop())
+      * Peek (first element): O(1)
+      * Access / Search: O(n)
+  * Queue
+    * Queues are FIFO, think about a line of people
+    * They can be backed by Arrays (ArrayLists) or LinkedList
+    * When backed by an array you dequeue from the front and enqueue to the back
+      * this means you need to keep a reference to the front and the back
+      * whenever you remove from the front you need to increment front and mod with the length of the backing array (Queue is circular in this nature)
+      * Whenever you add you have to also increment back
+        * if back is greater than the length of the backing array then you must set back to (front + size) % backingArray.length
+        * if size == backingArray.length, then resize()
+      * resizing is O(n)
+      ```java
+      private T[] resize() {
+          int newLength = backingArray.length * 2;
+          T[] newArrayList = (T[]) new Object[newLength];
+          for (int i = 0; i < backingArray.length; i++) {
+              newArrayList[i] = backingArray[(front + i) % backingArray.length];
+          }
+          front = 0;
+          back = size;
+          return newArrayList;
+    }
+      ```
+    * When backed by a singly linked list you want to add to the back and remove from the front
+    * When backed by a doubly linked list you want to add to the back and remove from the front
+    * Big O:
+      * Enqueue: O(1) (insert)
+      * Dequeue: O(1) (poll)
+      * Peek: O(1)
+      * Access / Search : O(n)
