@@ -150,7 +150,7 @@
         * Removing: O(log n), Worst - O(n)
 
       ![Image](https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Binary_search_tree.svg/1200px-Binary_search_tree.svg.png)
-      
+
   * Recursion
     * Base Case
     * Approach to Base Case
@@ -160,6 +160,29 @@
     * Generics are just a placeholder for objects
 
 ### Test 2
+  * AVLs
+    * Rotations
+      * Right Rotation
+        * When the balance factor is greater than 1, left subtree is more than one higher than the right subtree
+      * Left Rotation
+        * When the balance factor is less than -1, right subtree is more than one higher than the left subtree
+      * Left-Right Rotation
+        * When the balance factor is less than -1, but the height of that node is > 0
+      * Right-Left Rotation
+        * When the balance factor is greater than 1, but the height of that node is < 0
+    * Height
+    * Balance Factor
+  * Heaps (min and max)
+  * Priority Queues
+  * Hash Maps
+    * External Chaining
+      * LinkedList
+      * BST
+      * AVL
+    * Probing
+      * Linear
+      * Quadratic
+  * SkipLists
 
 ### Test 3
 
