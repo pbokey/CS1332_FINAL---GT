@@ -281,11 +281,11 @@
      * ```DFS(list, vertex, graph``` visits all the vertices and edges in the connected component of ```vertex```.
      * All the edges and vertices visited by ```DFS(list, vertex, graph``` form a spanning tree of the connected component of ```vertex```.
 
-    * **Breadth First Search:**
-        * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
+  * **Breadth First Search:**
+     * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
         ```java
         public void bfs(Vertex<T> start, Graph<T> graph) {
-        while(!queue.isEmpty() && visited.size() < graph.getAdjList().size()) {
+            while(!queue.isEmpty() && visited.size() < graph.getAdjList().size()) {
                 Vertex<T> removed = queue.remove();
                 for (Edge<T> item: graph.getAdjList().get(removed)) {
                     if (!visited.contains(item.getV())) {
