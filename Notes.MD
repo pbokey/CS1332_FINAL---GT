@@ -280,3 +280,22 @@
      ```
      * ```DFS(list, vertex, graph``` visits all the vertices and edges in the connected component of ```vertex```.
      * All the edges and vertices visited by ```DFS(list, vertex, graph``` form a spanning tree of the connected component of ```vertex```.
+     
+     
+     
+     
+    ### String Searching
+     Sorting Algorithms:
+Bubble: O(n) already sorted, O(n^2) avg worst, in place and stable
+Cocktail: O(n) already sorted, O(n^2) avg worst, in place and stable
+Insertion: O(n) already sorted, O(n^2) avg worst, in place and stable
+Selection: O(n^2) always, in place but not stable
+Merge: O(nlogn) always, stable but not in place
+Quick: O(nlogn) or (n^2) worst, stable but not in place, or unstable but in place
+Radix: O(kn)
+
+String searching:
+n = text length, m = pattern length
+KMP: best = O(m), avg,worst = O(m + n)
+Boyer Moore: best = O(m), avg = O(m + n), worst = O(mn) (when first char is always mismatched)
+Rabin Karp: best = O(m), avg = O(m + n), worst = O(mn) (poor hash, pattern/text hash are equal)
