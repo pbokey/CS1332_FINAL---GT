@@ -164,15 +164,53 @@
     * Rotations
       * Right Rotation
         * When the balance factor is greater than 1, left subtree is more than one higher than the right subtree
+        ![Image](http://occcwiki.org/images/e/ef/SingleRightRotation.png)
       * Left Rotation
         * When the balance factor is less than -1, right subtree is more than one higher than the left subtree
+        ![Image](http://occcwiki.org/images/f/f4/SingleLeftRotation.png)
       * Left-Right Rotation
         * When the balance factor is less than -1, but the height of that node is > 0
+        ![Image](http://occcwiki.org/images/a/a3/DoubleRightRotation.png)
       * Right-Left Rotation
         * When the balance factor is greater than 1, but the height of that node is < 0
+        ![Image](http://occcwiki.org/images/f/f7/DoubleLeftRotation.png)
     * Height
+      * In an AVL tree each node has a height field where you store the height of the node
+      * Every time you add or remove a node you have to update the height of the node
+      ```python
+      def height(node):
+          if node is None:
+            return -1
+          else:
+            return node.height
+      def update_height(node):
+          node.height = max(height(node.left), height(node.right)) + 1
+      ```
     * Balance Factor
+      * height(node.left) - height(node.right)
+    * **Big O**
+      * Adding: O(log n)
+      * Removing: O(log n)
+      * Search: O(log n)
+      * Balancing: O(1)
   * Heaps (min and max)
+    * Specialized Tree
+    ![Image](http://interactivepython.org/runestone/static/pythonds/_images/heapOrder.png)
+    * 2 properties
+      * Completeness (filed left to right)
+      * Order (everything below a node is less/greater than it)
+    * Heaps are usually stored as Arrays
+      * Root of heap is A[i]
+      * Parent A[floor(i/2)]
+      * Left Child A[2i]
+      * Right Child A[2i + 1]
+
+    * Heapify (one node)
+      * Makes one node adhere to heap properties
+      * O(log n) algorithm
+    * Build Heap
+      * Heapify for all nodes
+      * O(n * log n) algorithm
   * Priority Queues
   * Hash Maps
     * External Chaining
