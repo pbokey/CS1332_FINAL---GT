@@ -285,6 +285,12 @@
      * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
         ```java
         public void bfs(Vertex<T> start, Graph<T> graph) {
+            Queue<Vertex<T>> queue = new LinkedList<>();
+            HashSet<Vertex<T>> visited = new HashSet<>();
+            List<Vertex<T>> list = new ArrayList<>();
+            queue.add(start);
+            visited.add(start);
+            list.add(start);
             while(!queue.isEmpty() && visited.size() < graph.getAdjList().size()) {
                 Vertex<T> removed = queue.remove();
                 for (Edge<T> item: graph.getAdjList().get(removed)) {
