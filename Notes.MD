@@ -211,15 +211,45 @@
     * Build Heap
       * Heapify for all nodes
       * O(n * log n) algorithm
+    * **Big O**
+      * Adding: O(log n)
+      * Removing: O(log n)
+      * Get (only can get top element, cant access/search for others): O(1)
   * Priority Queues
+    * Queue that is ordered by some comparator
+    * Usually implemented with a heap
+    * However it is an abstract data type and can be implement with a wide array of data structures
+    * **Big O**
+      * Adding: O(log n)
+      * Delete: O(log n)
+      * Search: O(n)
   * Hash Maps
+    * Hash Maps are data structures that store key value pairs
+    * It is usually backed by an array (could also be an arraylist)
+    * The key is hashed and this hash value is modded with the length of the array which is used as the index to place the element in
+    * If an element is already in that index, external chaining or probing is utilized to deal with collisions
+    * Hash Maps usually have a load factor which is equal to the (number of elements) / (length of backing table)
+    * Once the load factor threshold is met the table must be resized and all keys need to be rehashed and put back into the resized table
+      * this is accomplished by saving the current table in a temp variable
+      * then resize the original table to size * 2 + 1
+      * for every element in the temp table add it to the new table
+    * When removing a value from the HashMap you do the same thing as add, except you dont add any data and just returned the removed data and set the current ```table[index].setRemoved(true);```
+      * this is done because in HashMap search, get, and remove whenever you hit a null value know that the value is not in the hash map or cannot be removed from the hashmap
     * External Chaining
       * LinkedList
       * BST
       * AVL
     * Probing
-      * Linear
-      * Quadratic
+      * Linear - keep adding one to the index until you find the key or an empty spot
+      * Quadratic - index + 1, index + 2^2, index + 3^2, index + 4^2 ...
+        * this does not check every index so there are more empty slots and sometimes a Key,Value pair cannot be added in
+        * this means that sometimes the array is resized independent of the load factor
+        * if you probe n times, where n is the size of the array, then you have to resize the array
+    * **Big O Average/Worst**
+      * Adding: amortized O(1) (may have to resize the table if the load factor is reached) / O(n)
+      * Removing: amortized O(1) / O(n)
+      * Search: amortized O(1) / O(n)
+
   * SkipLists
 
 ### Test 3
