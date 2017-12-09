@@ -549,7 +549,64 @@
     * **Prims**
 
 ### String Searching
-    * KMP
+  * **KMP**
+    * best for small alphabets
+    * KMP:
+            ```java
+            public static List<integer> kmp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+                   List<Integer> matches = new ArrayList<>();
+                   int[] failureTable = buildFailureTable(pattern, comparator);
+                   int i = 0;
+                   int j = 0;
+                   while (i <= text.length() - pattern.length()) {
+                       while (j < pattern.length() && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
+                           j++;
+                       }
+                       if (j == 0) {
+                           i++;
+                       } else {
+                           if (j == pattern.length()) {
+                               matches.add(i);
+                           }
+                           int nextAlignment = failureTable[j - 1];
+                           i += j - nextAlignment;
+                           j = nextAlignment;
+                       }
+                   }
+                   return matches;
+              }
+             ```
+   * KMP Failure Table:
+        ```java
+          private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
+              int[] table = new int[pattern.length()];
+              table[0] = 0;
+              int i = 0;
+              int j = 1;
+              while (j < table.length) {
+                  if (comp.compare(pattern.charAt(i), pattern.charAt(j)) == 0) {
+                      table[j++] = i + 1;
+                      i++;
+                  } else if (i == 0) {
+                      table[j++] = 0;
+                  } else {
+                      i = table[i - 1];
+                  }
+              }
+              return table;
+          }
+          ```
+    * **Big O**
+      * n = text length, m = pattern length
+      * Best: O(m)
+      * Average/Worst: O(m + n)
+    
+    
+    
+    
+    
+    
+    
     * Boyer-Moore
     * Rabin-Karp
         String searching:
