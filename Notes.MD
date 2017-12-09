@@ -457,6 +457,8 @@
       * start with ones digit and move up to tens, and so on
     * These buckets are an array of Queues
     * The number of iterations is equal to the number of digits in the largest number
+    * At the end of one iteration you pop off all numbers in the array of queues and add back to the original array that was passed
+    * Do this K number of times
     * **Big O**
       * All Cases: O(kn)
       * K is number of digits in largest number
@@ -473,21 +475,35 @@
   * **Spanning Forest:** A spanning forest is a spanning subgraph that is a forest.
   * **Depth First Search:**
      * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
-     ```java
-     public void dfs(List list, Vertex vertex, Graph graph) {
-        list = new ArrayList();
-        list.add(vertex);
-        List edges = graph.adjList().get(vertex);
-        for (Edge edge : edges) {
-           Vertex end = edge.V;
-           if (!list.contains(end)) {
-              dfs(list, end, graph);
-           }
-        }
-     }
-     ```
+       ```java
+       public void dfs(List<Vertex<T>> list, Vertex vertex, Graph graph, Stack<Vertex<T>> visited) {
+          ArrayList<Vertex<T>> list = new ArrayList();
+          Stack<Vertex<T>> visited = new Stack<>();
+          list.add(vertex);
+          visited.add(vertex);
+          List edges = graph.adjList().get(vertex);
+          for (Edge edge : edges) {
+             Vertex end = edge.V;
+             if (!visited.contains(end)) {
+               if (!(edge.getV().equals(vertex)) {
+                   dfs(list, end, graph, visited);
+               }
+             }
+          }
+       }
+       ```
      * ```DFS(list, vertex, graph``` visits all the vertices and edges in the connected component of ```vertex```.
-     * All the edges and vertices visited by ```DFS(list, vertex, graph``` form a spanning tree of the connected component of ```vertex```.
+     * **All** the edges and vertices visited by ```DFS(list, vertex, graph``` form a spanning tree of the connected component of ```vertex```.
+     * **Diagraming**:
+        * Start at Vertex
+        * Add it to list and to set
+        * For all the vertices adjacent to it
+          * check if we have visited it
+          * if we have not, then call dfs on that vertex
+          * if we have then do nothing, and check the next vertex incident to it
+        * If all vertices incident to it are visited, keep going back one vertex from that vertex until you find a vertex that has another incident vertex that we have not visited yet
+        * Call dfs on that vertex, and repeat steps
+        * You are done when all vertices have been visited
 
   * **Breadth First Search:**
      * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
@@ -511,10 +527,22 @@
             }
         }
         ```
+    * **Djikstras**
 
-    ### String Searching
+    * **Kruskals**
+
+    * **Prims**
+
+### String Searching
+    * KMP
+    * Boyer-Moore
+    * Rabin-Karp
         String searching:
         n = text length, m = pattern length
         KMP: best = O(m), avg,worst = O(m + n)
         Boyer Moore: best = O(m), avg = O(m + n), worst = O(mn) (when first char is always mismatched)
         Rabin Karp: best = O(m), avg = O(m + n), worst = O(mn) (poor hash, pattern/text hash are equal)
+
+### Dynamic Programming
+    * Floyd-Warshall
+    * LCS (Diagram)
