@@ -552,6 +552,7 @@
   * **KMP**
     * best for small alphabets
     * KMP:
+   
             ```java
             public static List<integer> kmp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
                    List<Integer> matches = new ArrayList<>();
