@@ -475,25 +475,25 @@
   * **Spanning Forest:** A spanning forest is a spanning subgraph that is a forest.
   * **Depth First Search:**
      * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
-       ```java
-       public void dfs(List<Vertex<T>> list, Vertex vertex, Graph graph, Stack<Vertex<T>> visited) {
-          ArrayList<Vertex<T>> list = new ArrayList();
-          Stack<Vertex<T>> visited = new Stack<>();
-          list.add(vertex);
-          visited.add(vertex);
-          List edges = graph.adjList().get(vertex);
-          for (Edge edge : edges) {
-             Vertex end = edge.V;
-             if (!visited.contains(end)) {
-               if (!(edge.getV().equals(vertex)) {
-                   dfs(list, end, graph, visited);
-               }
-             }
-          }
-       }
-       ```
-     * ```DFS(list, vertex, graph``` visits all the vertices and edges in the connected component of ```vertex```.
-     * **All** the edges and vertices visited by ```DFS(list, vertex, graph``` form a spanning tree of the connected component of ```vertex```.
+     ```java
+      public void dfs(List<Vertex<T>> list, Vertex vertex, Graph graph, Stack<Vertex<T>> visited) {
+         ArrayList<Vertex<T>> list = new ArrayList();
+         Stack<Vertex<T>> visited = new Stack<>();
+         list.add(vertex);
+         visited.add(vertex);
+         List edges = graph.adjList().get(vertex);
+         for (Edge edge : edges) {
+            Vertex end = edge.V;
+            if (!visited.contains(end)) {
+              if (!(edge.getV().equals(vertex))) {
+                dfs(list, end, graph, visited);
+              }
+            }
+         }
+      }
+     ```
+     * DFS(list, vertex, graph) visits all the vertices and edges in the connected component of vertex.
+     * **All** the edges and vertices visited by DFS(list, vertex, graph form a spanning tree of the connected component of vertex.
      * **Diagraming**:
         * Start at Vertex
         * Add it to list and to set
