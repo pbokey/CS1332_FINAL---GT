@@ -492,8 +492,6 @@
           }
        }
        ```
-     * ```DFS(list, vertex, graph``` visits all the vertices and edges in the connected component of ```vertex```.
-     * **All** the edges and vertices visited by ```DFS(list, vertex, graph``` form a spanning tree of the connected component of ```vertex```.
      * **Diagraming**:
         * Start at Vertex
         * Add it to list and to set
