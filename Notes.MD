@@ -597,19 +597,68 @@
               return table;
           }
           ```
-    * **Big O**
+    * Big O
       * n = text length, m = pattern length
       * Best: O(m)
       * Average/Worst: O(m + n)
     
-    
-    
-    
-    
-    
-    
-    * Boyer-Moore
-    * Rabin-Karp
+
+
+
+  * **Boyer Moore**
+    * best for large alphabets
+    * Boyer Moore:
+   
+        ```java
+          public static List<Integer> boyerMoore(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+              List<Integer> matches = new ArrayList<>();
+              if (pattern.length() < text.length()) {
+                  return matches;
+              }
+              Map<Character, Integer> lastTable = buildLastTable(pattern);
+              int patternIndex = 0;
+              while (patternIndex + pattern.length() <= text.length()) {
+                  int i = patternIndex + pattern.length() - 1;
+                  int j = pattern.length() - 1;
+                  while (j >= 0 && comparator.compare(text.charAt(i), pattern.charAt(j)) == 0) {
+                      i--;
+                      j--;
+                  }
+                  if (j == -1) {
+                      matches.add(i + 1);
+                      patternIndex++;
+                  } else {
+                      int shiftedIndex = lastTable.get(charAt(i)) == null ? -1 : lastTable.get(text.charAt(i));
+                      if (shiftedIndex < j) {
+                          patternIndex += j - shiftedIndex;
+                      } else {
+                          patternIndex++;
+                      }
+                  }
+              }
+              return matches;
+          }
+          ```
+   * Boyer Moore Last Occurrence Table:
+        ```java
+         private static Map<Character, Integer> buildLastTable(CharSequence pattern) {
+             Map<Character, Integer> lastTable = new HashMap<>();
+             if (pattern.length() == 0) {
+                 return lastTable;
+             }
+             for (int i = 0; i < pattern.length(); i++) {
+                 lastTable.put(pattern.charAt(i), i);
+             }
+             return lastTable;
+         }
+          ```
+    * Big O
+      * n = text length, m = pattern length
+      * Best: O(m)
+      * Average: O(m + n)
+      * Worst: O(mn) when first char is always mismatched or every letter is a match
+      
+  * Rabin-Karp
         String searching:
         n = text length, m = pattern length
         KMP: best = O(m), avg,worst = O(m + n)
