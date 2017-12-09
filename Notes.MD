@@ -553,7 +553,7 @@
     * best for small alphabets
     * KMP:
    
-            ```java
+        ```java
             public static List<integer> kmp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
                    List<Integer> matches = new ArrayList<>();
                    int[] failureTable = buildFailureTable(pattern, comparator);
@@ -576,7 +576,7 @@
                    }
                    return matches;
               }
-             ```
+          ```
    * KMP Failure Table:
         ```java
           private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
