@@ -487,7 +487,7 @@
             Vertex end = edge.V;
             if (!visited.contains(end)) {
               if (!(edge.getV().equals(vertex))) {
-                dfs(list, end, graph, visited);
+                recursivedfshelper(list, end, graph, visited);
               }
             }
          }
@@ -582,14 +582,180 @@
     * **Prims**
 
 ### String Searching
-    * KMP
-    * Boyer-Moore
-    * Rabin-Karp
-        String searching:
-        n = text length, m = pattern length
-        KMP: best = O(m), avg,worst = O(m + n)
-        Boyer Moore: best = O(m), avg = O(m + n), worst = O(mn) (when first char is always mismatched)
-        Rabin Karp: best = O(m), avg = O(m + n), worst = O(mn) (poor hash, pattern/text hash are equal)
+  * **KMP**
+    * best for small alphabets
+    * KMP:
+
+        ```java
+            public static List<integer> kmp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+                   List<Integer> matches = new ArrayList<>();
+                   int[] failureTable = buildFailureTable(pattern, comparator);
+                   int i = 0;
+                   int j = 0;
+                   while (i <= text.length() - pattern.length()) {
+                       while (j < pattern.length() && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
+                           j++;
+                       }
+                       if (j == 0) {
+                           i++;
+                       } else {
+                           if (j == pattern.length()) {
+                               matches.add(i);
+                           }
+                           int nextAlignment = failureTable[j - 1];
+                           i += j - nextAlignment;
+                           j = nextAlignment;
+                       }
+                   }
+                   return matches;
+              }
+          ```
+   * KMP Failure Table:
+        ```java
+          private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
+              int[] table = new int[pattern.length()];
+              table[0] = 0;
+              int i = 0;
+              int j = 1;
+              while (j < table.length) {
+                  if (comp.compare(pattern.charAt(i), pattern.charAt(j)) == 0) {
+                      table[j++] = i + 1;
+                      i++;
+                  } else if (i == 0) {
+                      table[j++] = 0;
+                  } else {
+                      i = table[i - 1];
+                  }
+              }
+              return table;
+          }
+          ```
+    * Big O
+      * n = text length, m = pattern length
+      * Best: O(m)
+      * Average/Worst: O(m + n)
+
+
+
+
+  * **Boyer Moore**
+    * best for large alphabets
+    * Boyer Moore:
+
+        ```java
+          public static List<Integer> boyerMoore(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+              List<Integer> matches = new ArrayList<>();
+              if (pattern.length() < text.length()) {
+                  return matches;
+              }
+              Map<Character, Integer> lastTable = buildLastTable(pattern);
+              int patternIndex = 0;
+              while (patternIndex + pattern.length() <= text.length()) {
+                  int i = patternIndex + pattern.length() - 1;
+                  int j = pattern.length() - 1;
+                  while (j >= 0 && comparator.compare(text.charAt(i), pattern.charAt(j)) == 0) {
+                      i--;
+                      j--;
+                  }
+                  if (j == -1) {
+                      matches.add(i + 1);
+                      patternIndex++;
+                  } else {
+                      int shiftedIndex = lastTable.get(charAt(i)) == null ? -1 : lastTable.get(text.charAt(i));
+                      if (shiftedIndex < j) {
+                          patternIndex += j - shiftedIndex;
+                      } else {
+                          patternIndex++;
+                      }
+                  }
+              }
+              return matches;
+          }
+          ```
+   * Boyer Moore Last Occurrence Table:
+        ```java
+         private static Map<Character, Integer> buildLastTable(CharSequence pattern) {
+             Map<Character, Integer> lastTable = new HashMap<>();
+             if (pattern.length() == 0) {
+                 return lastTable;
+             }
+             for (int i = 0; i < pattern.length(); i++) {
+                 lastTable.put(pattern.charAt(i), i);
+             }
+             return lastTable;
+         }
+          ```
+    * Big O
+      * n = text length, m = pattern length
+      * Best: O(m)
+      * Average: O(m + n)
+      * Worst: O(mn) when first char is always mismatched or every letter is a match
+
+  * **Rabin Karp**
+    * uses hashing
+    * Rabin Karp:
+
+        ```java
+        public static List<Integer> rabinKarp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+            List<Integer> matches = new ArrayList<>();
+            if (pattern.length() < text.length()) {
+                return matches;
+            }
+            int patternHash = generateHash(pattern, pattern.length());
+            int textHash = generateHash(text, pattern.length());
+            int i = 0;
+            while (i + pattern.length() <= text.length()) {
+                if (patternHash == textHash) {
+                    int j = 0;
+                    while (j < pattern.length() && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
+                        j++;
+                    }
+                    if (j == pattern.length()) {
+                        matches.add(i);
+                    }
+                }
+                if (i + pattern.length() < text.length()) {
+                    textHash = updateHash(textHash, pattern.length(), text.charAt(i), text.charAt(i + pattern.length()));
+                }
+                i++;
+            }
+            return matches;
+        }
+          ```
+   * Rabin Karp generateHash:
+        ```java
+       private static int generateHash(CharSequence current, int length) {
+           int hashSum = 0;
+           for (int i = 0; i < length; i++) {
+               hashSum += current.charAt(i) * pow(BASE, length - 1 - i);
+           }
+           return hashSum;
+       }
+          ```
+   * Rabin Karp updateHash:
+        ```java
+       private static int updateHash(int oldHash, int length, char oldChar, char newChar) {
+           return (oldHash - oldChar * pow(BASE, length - 1) * BASE + newChar);
+       }
+          ```
+   * Rabin Karp pow:
+        ```java
+       private static int pow(int base, int exp) {
+           if (exp == 0) return 1;
+           for (int i = 0; i < exp; i++) {
+               base *= base;
+           }
+           return base;
+       }
+          ```
+
+
+   * Big O
+      * n = text length, m = pattern length
+      * Best: O(m)
+      * Average: O(m + n)
+      * Worst: O(mn) poor hash, pattern/text hash are equal
+
 
 ### Dynamic Programming
     * Floyd-Warshall
