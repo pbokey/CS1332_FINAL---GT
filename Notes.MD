@@ -117,6 +117,14 @@
       * Peek: O(1)
       * Access / Search : O(n)
 
+  * **Deque**
+    * Double ended queue
+    * Can add and remove from both sides
+    * Does NOT follow FIFO or LIFO necessarily; Up to user to define usage
+    * Big O: Doubly Linked List Implementation
+      * O(1) insertion at start / end
+      * O(1) removal from start / end
+    * Can be implemented with circular array
   * **Trees**
     * Trees are data structures that contains of nodes which have their own subtrees
     * It is a Graph
