@@ -577,115 +577,177 @@
           return retMap;
       }
       ```
+      * Diagram
+        * Add all incident edges to priority queue with their destination source and weight
+        * All vertices should be added to a map with a max integer value
+        * Go to the vertex with the lowest weight, add all its edges to the priority queue but make sure to add the weight it took to get to the previous node. Like if you go from B to A and it takes 4 and C to B takes 2 then the number next to C needs to be 6
+        * Also update other vertices if you can get to their from B with less weight than if you can get to there from A
+        * Keep doing this until the priority queue is empty
+      * **Big O**
+        * Average: O(|E| log|V|)
+        * Worst: O(|V| ^ 2)
     * **Kruskals**
-
+      * uses disjoint sets
+      * it returns a minimal spanning tree in terms of edges
+      * if the graph is disconnected, there is no valid MST so you return null
+      * add all edges to priority queue
+      * create disjoint sets out of each vertex in the graph
+      * pop the first edge out of the PQ
+      * for the other vertex on the edge (edge.getV()), if it is not in the same disjoint set as edge.getU() then union the two disjoint sets of vertices
+      * if they are in the same disjoint set then do nothing
+      * stop once you have V - 1 edges in the return list/set
+      ```java
+      public static <T> Set<Edge<T>> kruskals(Graph<T> graph) {
+        if (graph == null) {
+            throw new IllegalArgumentException("The graph that is passed in "
+                    + "was null");
+        }
+        Set<Edge<T>> ret = new HashSet<>();
+        PriorityQueue<Edge<T>> edgePQ = new PriorityQueue<>();
+        edgePQ.addAll(graph.getEdges());
+        HashSet<T> vertData = new HashSet<>();
+        for (Vertex<T> fournette: graph.getAdjList().keySet()) {
+            vertData.add(fournette.getData());
+        }
+        DisjointSet<T> disjoint = new DisjointSet<>(vertData);
+        if (vertData.size() == 0 && graph.getEdges().size() == 0) {
+            return null;
+        }
+        if (vertData.size() == 1) {
+            return ret;
+        }
+        if (graph.getEdges().size() < (2 * (vertData.size() - 1))) {
+            return null;
+        }
+        while (!edgePQ.isEmpty() && ret.size() < graph.getAdjList().keySet()
+                .size() * 2) {
+            Edge<T> curr = edgePQ.remove();
+            if (!(disjoint.find(curr.getU().getData()).equals(disjoint.find(curr
+                    .getV().getData())))) {
+                disjoint.union(curr.getU().getData(), curr.getV().getData());
+                ret.add(curr);
+                Edge<T> newEdge = new Edge<>(curr.getV(), curr.getU(), curr
+                        .getWeight());
+                ret.add(newEdge);
+            }
+        }
+        return ret;
+      }
+      ```
+      * **Big O**
+        * O(E log V)
     * **Prims**
+      * wont have to code this on the test
+      * returns the minimum spanning tree of a graph like Kruskals, but does not use disjoint sets
+      * in Kruskals you add all edges to the priority queue at first, in Prims you start at a vertex and only add edges incident to that vertex to the Priority Queue
+      * pop the edge with the smallest weight and visit the other vertex of this edge, add that edge to that visited set
+      * add all of the edges incident to the PQ
+      * pop the next edge off, if the vertex for that edge has not been visited, then visit it and add all its edges to the PQ
+      * repeat until number of elements in return list = V - 1 / number of edges in list is V - 1
+      * **Big O**
+        * Average: O(|E| log|V|)
+        * Worst: O(|V| ^ 2)
 
 ### String Searching
   * **KMP**
-    * best for small alphabets
+    * best for small alphabets (alphabets don't really matter for this one)
     * KMP:
 
-        ```java
-            public static List<integer> kmp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
-                   List<Integer> matches = new ArrayList<>();
-                   int[] failureTable = buildFailureTable(pattern, comparator);
-                   int i = 0;
-                   int j = 0;
-                   while (i <= text.length() - pattern.length()) {
-                       while (j < pattern.length() && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
-                           j++;
-                       }
-                       if (j == 0) {
-                           i++;
-                       } else {
-                           if (j == pattern.length()) {
-                               matches.add(i);
-                           }
-                           int nextAlignment = failureTable[j - 1];
-                           i += j - nextAlignment;
-                           j = nextAlignment;
-                       }
+    ```java
+    public static List<integer> kmp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+           List<Integer> matches = new ArrayList<>();
+           int[] failureTable = buildFailureTable(pattern, comparator);
+           int i = 0;
+           int j = 0;
+           while (i <= text.length() - pattern.length()) {
+               while (j < pattern.length() && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
+                   j++;
+               }
+               if (j == 0) {
+                   i++;
+               } else {
+                   if (j == pattern.length()) {
+                       matches.add(i);
                    }
-                   return matches;
-              }
-          ```
+                   int nextAlignment = failureTable[j - 1];
+                   i += j - nextAlignment;
+                   j = nextAlignment;
+               }
+           }
+           return matches;
+      }
+      ```
    * KMP Failure Table:
-        ```java
-          private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
-              int[] table = new int[pattern.length()];
-              table[0] = 0;
-              int i = 0;
-              int j = 1;
-              while (j < table.length) {
-                  if (comp.compare(pattern.charAt(i), pattern.charAt(j)) == 0) {
-                      table[j++] = i + 1;
-                      i++;
-                  } else if (i == 0) {
-                      table[j++] = 0;
-                  } else {
-                      i = table[i - 1];
-                  }
+    ```java
+      private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
+          int[] table = new int[pattern.length()];
+          table[0] = 0;
+          int i = 0;
+          int j = 1;
+          while (j < table.length) {
+              if (comp.compare(pattern.charAt(i), pattern.charAt(j)) == 0) {
+                  table[j++] = i + 1;
+                  i++;
+              } else if (i == 0) {
+                  table[j++] = 0;
+              } else {
+                  i = table[i - 1];
               }
-              return table;
           }
-          ```
-    * Big O
+          return table;
+      }
+      ```
+    * **Big O**
       * n = text length, m = pattern length
       * Best: O(m)
       * Average/Worst: O(m + n)
-
-
-
-
   * **Boyer Moore**
     * best for large alphabets
     * Boyer Moore:
-
-        ```java
-          public static List<Integer> boyerMoore(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
-              List<Integer> matches = new ArrayList<>();
-              if (pattern.length() < text.length()) {
-                  return matches;
-              }
-              Map<Character, Integer> lastTable = buildLastTable(pattern);
-              int patternIndex = 0;
-              while (patternIndex + pattern.length() <= text.length()) {
-                  int i = patternIndex + pattern.length() - 1;
-                  int j = pattern.length() - 1;
-                  while (j >= 0 && comparator.compare(text.charAt(i), pattern.charAt(j)) == 0) {
-                      i--;
-                      j--;
-                  }
-                  if (j == -1) {
-                      matches.add(i + 1);
-                      patternIndex++;
-                  } else {
-                      int shiftedIndex = lastTable.get(charAt(i)) == null ? -1 : lastTable.get(text.charAt(i));
-                      if (shiftedIndex < j) {
-                          patternIndex += j - shiftedIndex;
-                      } else {
-                          patternIndex++;
-                      }
-                  }
-              }
+    ```java
+      public static List<Integer> boyerMoore(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+          List<Integer> matches = new ArrayList<>();
+          if (pattern.length() < text.length()) {
               return matches;
           }
-          ```
+          Map<Character, Integer> lastTable = buildLastTable(pattern);
+          int patternIndex = 0;
+          while (patternIndex + pattern.length() <= text.length()) {
+              int i = patternIndex + pattern.length() - 1;
+              int j = pattern.length() - 1;
+              while (j >= 0 && comparator.compare(text.charAt(i), pattern.charAt(j)) == 0) {
+                  i--;
+                  j--;
+              }
+              if (j == -1) {
+                  matches.add(i + 1);
+                  patternIndex++;
+              } else {
+                  int shiftedIndex = lastTable.get(charAt(i)) == null ? -1 : lastTable.get(text.charAt(i));
+                  if (shiftedIndex < j) {
+                      patternIndex += j - shiftedIndex;
+                  } else {
+                      patternIndex++;
+                  }
+              }
+          }
+          return matches;
+      }
+      ```
    * Boyer Moore Last Occurrence Table:
-        ```java
-         private static Map<Character, Integer> buildLastTable(CharSequence pattern) {
-             Map<Character, Integer> lastTable = new HashMap<>();
-             if (pattern.length() == 0) {
-                 return lastTable;
-             }
-             for (int i = 0; i < pattern.length(); i++) {
-                 lastTable.put(pattern.charAt(i), i);
-             }
+    ```java
+     private static Map<Character, Integer> buildLastTable(CharSequence pattern) {
+         Map<Character, Integer> lastTable = new HashMap<>();
+         if (pattern.length() == 0) {
              return lastTable;
          }
-          ```
-    * Big O
+         for (int i = 0; i < pattern.length(); i++) {
+             lastTable.put(pattern.charAt(i), i);
+         }
+         return lastTable;
+     }
+      ```
+    * **Big O**
       * n = text length, m = pattern length
       * Best: O(m)
       * Average: O(m + n)
@@ -695,62 +757,60 @@
     * uses hashing
     * Rabin Karp:
 
-        ```java
-        public static List<Integer> rabinKarp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
-            List<Integer> matches = new ArrayList<>();
-            if (pattern.length() < text.length()) {
-                return matches;
-            }
-            int patternHash = generateHash(pattern, pattern.length());
-            int textHash = generateHash(text, pattern.length());
-            int i = 0;
-            while (i + pattern.length() <= text.length()) {
-                if (patternHash == textHash) {
-                    int j = 0;
-                    while (j < pattern.length() && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
-                        j++;
-                    }
-                    if (j == pattern.length()) {
-                        matches.add(i);
-                    }
-                }
-                if (i + pattern.length() < text.length()) {
-                    textHash = updateHash(textHash, pattern.length(), text.charAt(i), text.charAt(i + pattern.length()));
-                }
-                i++;
-            }
+    ```java
+    public static List<Integer> rabinKarp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+        List<Integer> matches = new ArrayList<>();
+        if (pattern.length() < text.length()) {
             return matches;
         }
-          ```
-   * Rabin Karp generateHash:
-        ```java
-       private static int generateHash(CharSequence current, int length) {
-           int hashSum = 0;
-           for (int i = 0; i < length; i++) {
-               hashSum += current.charAt(i) * pow(BASE, length - 1 - i);
-           }
-           return hashSum;
-       }
-          ```
-   * Rabin Karp updateHash:
-        ```java
-       private static int updateHash(int oldHash, int length, char oldChar, char newChar) {
-           return (oldHash - oldChar * pow(BASE, length - 1) * BASE + newChar);
-       }
-          ```
-   * Rabin Karp pow:
-        ```java
-       private static int pow(int base, int exp) {
-           if (exp == 0) return 1;
-           for (int i = 0; i < exp; i++) {
-               base *= base;
-           }
-           return base;
-       }
-          ```
-
-
-   * Big O
+        int patternHash = generateHash(pattern, pattern.length());
+        int textHash = generateHash(text, pattern.length());
+        int i = 0;
+        while (i + pattern.length() <= text.length()) {
+            if (patternHash == textHash) {
+                int j = 0;
+                while (j < pattern.length() && comparator.compare(text.charAt(i + j), pattern.charAt(j)) == 0) {
+                    j++;
+                }
+                if (j == pattern.length()) {
+                    matches.add(i);
+                }
+            }
+            if (i + pattern.length() < text.length()) {
+                textHash = updateHash(textHash, pattern.length(), text.charAt(i), text.charAt(i + pattern.length()));
+            }
+            i++;
+        }
+        return matches;
+    }
+      ```
+    * Rabin Karp generateHash:
+    ```java
+    private static int generateHash(CharSequence current, int length) {
+        int hashSum = 0;
+        for (int i = 0; i < length; i++) {
+            hashSum += current.charAt(i) * pow(BASE, length - 1 - i);
+        }
+        return hashSum;
+    }
+   ```
+    * Rabin Karp updateHash:
+     ```java
+    private static int updateHash(int oldHash, int length, char oldChar, char newChar) {
+        return (oldHash - oldChar * pow(BASE, length - 1) * BASE + newChar);
+    }
+    ```
+    * Rabin Karp pow:
+      ```java
+     private static int pow(int base, int exp) {
+         if (exp == 0) return 1;
+         for (int i = 0; i < exp; i++) {
+             base *= base;
+         }
+         return base;
+     }
+     ```
+   * **Big O**
       * n = text length, m = pattern length
       * Best: O(m)
       * Average: O(m + n)
