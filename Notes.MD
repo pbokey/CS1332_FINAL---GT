@@ -301,6 +301,8 @@
 
 ### Test 3
   * Test 3 contained sorting, graphs, and string searching; however, graphs and string searching are more revelant in the second part of the final so we will only be discussing sorting here
+  * **2-4 Trees**
+    * TODO
   * **Bubble Sort**
     * Simplest sorting algorithm
     * Stable and in-place
@@ -585,7 +587,7 @@
         * Keep doing this until the priority queue is empty
       * **Big O**
         * Average: O(|E| log|V|)
-        * Worst: O(|V| ^ 2)
+        * Worst: O(E + Vlog(V))
     * **Kruskals**
       * uses disjoint sets
       * it returns a minimal spanning tree in terms of edges
@@ -635,7 +637,8 @@
       }
       ```
       * **Big O**
-        * O(E log V)
+        * Average: O(E log V)
+        * Worst:
     * **Prims**
       * wont have to code this on the test
       * returns the minimum spanning tree of a graph like Kruskals, but does not use disjoint sets
@@ -651,7 +654,17 @@
 ### String Searching
   * **KMP**
     * best for small alphabets (alphabets don't really matter for this one)
-    * KMP:
+    * how it works
+      * each entry in the failure table represents the length of the longest suffix at that letter that is also a prefix
+
+      | r | e | v | a | r | e | r | e | v |
+      | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+      | 0 | 0 | 0 | 0 | 1 | 2 | 1 | 2 | 3 |
+      * align the pattern at the beginning of the text
+      * compare each character, if there is a match compare the next character
+      * if the mismatch occurs at the first character shift the pattern over one
+      * if the mismatch occurs at the jth index of the pattern then look at the j-1 index of the failure table. This value tells you the next alignment of the pattern with the text. Align the pattern such that index failureTable[j - 1] of the pattern is aligned with the mismatching character in the text/ Then continue comparing from index failureTable[j - 1] of the pattern. Do not start from the beginning.
+
     ```java
     public static List<integer> kmp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
            List<Integer> matches = new ArrayList<>();
@@ -677,31 +690,31 @@
       }
       ```
    * KMP Failure Table:
-    ```java
-      private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
-          int[] table = new int[pattern.length()];
-          table[0] = 0;
-          int i = 0;
-          int j = 1;
-          while (j < table.length) {
-              if (comp.compare(pattern.charAt(i), pattern.charAt(j)) == 0) {
-                  table[j++] = i + 1;
-                  i++;
-              } else if (i == 0) {
-                  table[j++] = 0;
-              } else {
-                  i = table[i - 1];
-              }
-          }
-          return table;
-      }
-      ```
-    * **Big O**
-      * n = text length, m = pattern length
-      * Best: O(m)
-      * Average/Worst: O(m + n)
+   ```java
+    private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
+        int[] table = new int[pattern.length()];
+        table[0] = 0;
+        int i = 0;
+        int j = 1;
+        while (j < table.length) {
+            if (comp.compare(pattern.charAt(i), pattern.charAt(j)) == 0) {
+                table[j++] = i + 1;
+                i++;
+            } else if (i == 0) {
+                table[j++] = 0;
+            } else {
+                i = table[i - 1];
+            }
+        }
+        return table;
+    }
+  ```
+  * **Big O**
+    * n = text length, m = pattern length
+    * Best: O(m)
+    * Average/Worst: O(m + n)
   * **Boyer Moore**
-    * best for large alphabets, becasue then you can skip more
+    * best for large alphabets, because then you can skip more
     * Boyer Moore:
     ```java
       public static List<Integer> boyerMoore(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
@@ -733,9 +746,9 @@
           return matches;
       }
       ```
-   * Boyer Moore Last Occurrence Table:
-    ```java
-     private static Map<Character, Integer> buildLastTable(CharSequence pattern) {
+      * Boyer Moore Last Occurrence Table:
+      ```java
+      private static Map<Character, Integer> buildLastTable(CharSequence pattern) {
          Map<Character, Integer> lastTable = new HashMap<>();
          if (pattern.length() == 0) {
              return lastTable;
@@ -744,7 +757,7 @@
              lastTable.put(pattern.charAt(i), i);
          }
          return lastTable;
-     }
+       }
       ```
     * **Big O**
       * n = text length, m = pattern length
