@@ -652,7 +652,6 @@
   * **KMP**
     * best for small alphabets (alphabets don't really matter for this one)
     * KMP:
-
     ```java
     public static List<integer> kmp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
            List<Integer> matches = new ArrayList<>();
@@ -702,7 +701,7 @@
       * Best: O(m)
       * Average/Worst: O(m + n)
   * **Boyer Moore**
-    * best for large alphabets
+    * best for large alphabets, becasue then you can skip more
     * Boyer Moore:
     ```java
       public static List<Integer> boyerMoore(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
@@ -756,7 +755,6 @@
   * **Rabin Karp**
     * uses hashing
     * Rabin Karp:
-
     ```java
     public static List<Integer> rabinKarp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
         List<Integer> matches = new ArrayList<>();
