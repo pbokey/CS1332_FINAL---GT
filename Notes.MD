@@ -221,7 +221,8 @@
       * O(log n) algorithm
     * Build Heap
       * Heapify for all nodes
-      * O(n * log n) algorithm
+      * amortized O(n) algorithm
+      * worst case O(n log n)
     * **Big O**
       * Adding: O(log n)
       * Removing: O(log n)
@@ -475,7 +476,6 @@
   * **Spanning Forest:** A spanning forest is a spanning subgraph that is a forest.
   * **Depth First Search:**
      * Efficiency is O(n + m), where n is number of vertices, and m is number of edges.
-<<<<<<< HEAD
      ```java
       public void dfs(List<Vertex<T>> list, Vertex vertex, Graph graph, Stack<Vertex<T>> visited) {
          ArrayList<Vertex<T>> list = new ArrayList();
@@ -495,25 +495,6 @@
      ```
      * DFS(list, vertex, graph) visits all the vertices and edges in the connected component of vertex.
      * **All** the edges and vertices visited by DFS(list, vertex, graph form a spanning tree of the connected component of vertex.
-=======
-       ```java
-       public void dfs(List<Vertex<T>> list, Vertex vertex, Graph graph, Stack<Vertex<T>> visited) {
-          ArrayList<Vertex<T>> list = new ArrayList();
-          Stack<Vertex<T>> visited = new Stack<>();
-          list.add(vertex);
-          visited.add(vertex);
-          List edges = graph.adjList().get(vertex);
-          for (Edge edge : edges) {
-             Vertex end = edge.V;
-             if (!visited.contains(end)) {
-               if (!(edge.getV().equals(vertex)) {
-                   dfs(list, end, graph, visited);
-               }
-             }
-          }
-       }
-       ```
->>>>>>> e3c190860d26de45392b9a868e0068a73ff8a499
      * **Diagraming**:
         * Start at Vertex
         * Add it to list and to set
@@ -547,8 +528,55 @@
             }
         }
         ```
+      * It goes level by level, think of a wave in a way
+      * Diagram:
+        * Start at one node
+        * Add it to queue and visited list/set
+        * pop it off queue and all of its incident vertices to the queue and visited list/set
+        * then pop the next one off of the queue and all of its incident vertices to the queue and visited list/set (provided we have not visited it yet)
+        * do this until the queue is empty or the visited vertices = the vertices in the graph
     * **Djikstras**
-
+      * used to find the shortest path from one vertex to another
+      * employs priority queues and edge weights
+      * can work on a directed or undirected graph (but edges must have weights)
+      * sort of like breadth first search in which you dont just continue on one path until you hit the end or find the node
+      * instead you search adjacent vertices and based on the connecting edge weights you add them to a priority queue
+      * in class we implemented as a map where each vertex is mapped to an integer which is its distance from the start vertex
+      ```java
+        public static <T> Map<Vertex<T>, Integer> dijkstras(Vertex<T> start,
+                                                        Graph<T> graph) {
+          if (start == null || graph == null || !graph.getAdjList().containsKey(
+                  start)) {
+              throw new IllegalArgumentException("One of your input parameters "
+                      + "is null or the start vertex that was passed in is null");
+          }
+          Map<Vertex<T>, Integer> retMap = new HashMap<Vertex<T>, Integer>();
+          retMap.put(start, 0);
+          for (Vertex<T> vert: graph.getAdjList().keySet()) {
+              if (!vert.equals(start)) {
+                  retMap.put(vert, Integer.MAX_VALUE);
+              }
+          }
+          PriorityQueue<Edge<T>> priorityQueue = new PriorityQueue<>();
+          priorityQueue.addAll(graph.getAdjList().get(start));
+          HashSet<Vertex<T>> visited = new HashSet<>();
+          visited.add(start);
+          while (!priorityQueue.isEmpty() && graph.getAdjList().keySet().size() > visited.size()) {
+              Edge<T> curr = priorityQueue.remove();
+              Vertex<T> vert = curr.getV();
+              if (!visited.contains(vert)) {
+                  if (retMap.get(start) + curr.getWeight() < retMap.get(vert)) {
+                      retMap.put(vert, curr.getWeight());
+                      for (Edge<T> edge: graph.getAdjList().get(vert)) {
+                          priorityQueue.add(new Edge<T>(start, edge.getV(),
+                                  edge.getWeight() + curr.getWeight()));
+                      }
+                  }
+              }
+          }
+          return retMap;
+      }
+      ```
     * **Kruskals**
 
     * **Prims**
