@@ -117,14 +117,6 @@
       * Peek: O(1)
       * Access / Search : O(n)
 
-  * **Deque**
-    * Double ended queue
-    * Can add and remove from both sides
-    * Does NOT follow FIFO or LIFO necessarily; Up to user to define usage
-    * Big O: Doubly Linked List Implementation
-      * O(1) insertion at start / end
-      * O(1) removal from start / end
-    * Can be implemented with circular array
   * **Trees**
     * Trees are data structures that contains of nodes which have their own subtrees
     * It is a Graph
@@ -310,7 +302,17 @@
 ### Test 3
   * Test 3 contained sorting, graphs, and string searching; however, graphs and string searching are more revelant in the second part of the final so we will only be discussing sorting here
   * **2-4 Trees**
-    * TODO
+    * Jank as fuck
+    * Adding
+      * add to leaf
+      * if the leaf is full (like 4 data points), promote 2nd/3rd item to parent depending on implementation
+    * Removing
+      * remove the data
+      * replace with its predecessor/successor
+      * rotate if needed, and then merge
+    * **Big O**:
+      * Adding: O(log n)
+      * Removing: O(log n)
   * **Bubble Sort**
     * Simplest sorting algorithm
     * Stable and in-place
@@ -696,33 +698,41 @@
            }
            return matches;
       }
-      ```
-   * KMP Failure Table:
-   ```java
-    private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
-        int[] table = new int[pattern.length()];
-        table[0] = 0;
-        int i = 0;
-        int j = 1;
-        while (j < table.length) {
-            if (comp.compare(pattern.charAt(i), pattern.charAt(j)) == 0) {
-                table[j++] = i + 1;
-                i++;
-            } else if (i == 0) {
-                table[j++] = 0;
-            } else {
-                i = table[i - 1];
-            }
-        }
-        return table;
-    }
-  ```
-  * **Big O**
-    * n = text length, m = pattern length
-    * Best: O(m)
-    * Average/Worst: O(m + n)
+     ```
+     ```java
+      private static int[] buildFailureTable(CharSequence pattern, CharacterComparator comp) {
+          int[] table = new int[pattern.length()];
+          table[0] = 0;
+          int i = 0;
+          int j = 1;
+          while (j < table.length) {
+              if (comp.compare(pattern.charAt(i), pattern.charAt(j)) == 0) {
+                  table[j++] = i + 1;
+                  i++;
+              } else if (i == 0) {
+                  table[j++] = 0;
+              } else {
+                  i = table[i - 1];
+              }
+          }
+          return table;
+      }
+    ```
+    * **Big O**
+      * n = text length, m = pattern length
+      * Best: O(m)
+      * Average/Worst: O(m + n)
   * **Boyer Moore**
     * best for large alphabets, because then you can skip more
+    * how it works
+      * last table = how much to shift the pattern by on a mismatch
+      * the last table used is a mapping from each character in the alphabet to the last index the character appears in the pattern
+      * if the character is not used in the pattern then its value is -1
+      * You start from the back of the pattern comparing characters
+      * Wherever the mismatch happens in the text find that letters index in the failure table
+      * if the letter in the text is not in the pattern shift the entire pattern over
+      * else, if the letter in the text is in the failure table, move that index of the pattern to the mismatch
+      * you always start comparing from the back and must eventually compare all characters to find the pattern, unlike KMP where you don't compare again
     * Boyer Moore:
     ```java
       public static List<Integer> boyerMoore(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
@@ -775,9 +785,14 @@
 
   * **Rabin Karp**
     * uses hashing
+    * how it works
+      * generate hash for entire pattern
+      * generate hash for first pattern.length() characters of text
+      * if the hashes match, compare each character to see if the pattern matches the text
+      * if the hashes dont match, generate new hash for text by subtracting hash of first character from hash and then adding hash of next character to hash
     * Rabin Karp:
     ```java
-    public static List<Integer> rabinKarp(CharSequence pattern, CharSequence text, CharacterComparator comparator) {
+    public static List<Integer> rabinKarp(CharSequence pattern, CharSequence text,  CharacterComparator comparator) {
         List<Integer> matches = new ArrayList<>();
         if (pattern.length() < text.length()) {
             return matches;
@@ -812,15 +827,15 @@
         }
         return hashSum;
     }
-   ```
+    ```
     * Rabin Karp updateHash:
-     ```java
-    private static int updateHash(int oldHash, int length, char oldChar, char newChar) {
-        return (oldHash - oldChar * pow(BASE, length - 1) * BASE + newChar);
-    }
+    ```java
+      private static int updateHash(int oldHash, int length, char oldChar, char newChar) {
+          return (oldHash - oldChar * pow(BASE, length - 1) * BASE + newChar);
+      }
     ```
     * Rabin Karp pow:
-      ```java
+    ```java
      private static int pow(int base, int exp) {
          if (exp == 0) return 1;
          for (int i = 0; i < exp; i++) {
@@ -828,7 +843,7 @@
          }
          return base;
      }
-     ```
+    ```
    * **Big O**
       * n = text length, m = pattern length
       * Best: O(m)
@@ -837,5 +852,13 @@
 
 
 ### Dynamic Programming
-    * Floyd-Warshall
-    * LCS (Diagram)
+  * Floyd Warshall
+  * LCS
+    * Finding the Largest Common Subsequence (increasing order)
+    * Diagram
+      - Look at the largest number around the current number
+      - if there is a match add one to the largest number
+      - if there is not a match just put the largest number around the corner there
+      - Mark corners
+      - LCS will be a combination of these corners
+      - length of LCS is in bottom right corner
